@@ -1,0 +1,2561 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2ede3" />
+    <meta
+      name="description"
+      content="Câu chuyện của Bảo và Trân, bắt đầu từ ngày 25 tháng 4 năm 2024."
+    />
+    <title>Bảo &amp; Trân — Our Story</title>
+    <style>
+      :root {
+        --paper: #f2ede3;
+        --paper-light: #faf7ef;
+        --paper-deep: #e3d8c6;
+        --ink: #302f2a;
+        --muted: #777267;
+        --orange: #b96d43;
+        --orange-dark: #8d4b31;
+        --sage: #65705c;
+        --line: rgba(48, 47, 42, 0.18);
+        --serif: Georgia, "Times New Roman", serif;
+        --sans: Arial, Helvetica, sans-serif;
+        --shadow: 0 30px 80px rgba(55, 44, 31, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        overflow-x: hidden;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+      }
+
+      body.no-scroll,
+      body.intro-locked {
+        overflow: hidden;
+      }
+
+      img,
+      video {
+        display: block;
+        max-width: 100%;
+      }
+
+      button,
+      a {
+        color: inherit;
+        font: inherit;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      button {
+        border: 0;
+      }
+
+      ::selection {
+        background: var(--orange);
+        color: white;
+      }
+
+      .preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: grid;
+        place-items: center;
+        background: var(--paper);
+        transition: opacity 0.8s ease, visibility 0.8s ease;
+      }
+
+      .preloader.done {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .preloader-inner {
+        text-align: center;
+      }
+
+      .preloader-mark {
+        font-family: var(--serif);
+        font-size: clamp(4rem, 12vw, 8rem);
+        font-style: italic;
+        line-height: 1;
+      }
+
+      .preloader-mark span {
+        color: var(--orange);
+        font-size: 0.55em;
+      }
+
+      .preloader-line {
+        width: 180px;
+        height: 1px;
+        margin: 28px auto 12px;
+        overflow: hidden;
+        background: var(--line);
+      }
+
+      .preloader-line::after {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: var(--orange);
+        content: "";
+        animation: loading 1.5s cubic-bezier(0.77, 0, 0.18, 1) both;
+      }
+
+      .preloader p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+      }
+
+
+
+      .opening-parallax {
+        position: fixed;
+        inset: 0;
+        z-index: 95;
+        overflow: hidden;
+        background: #111a12;
+        color: #fff8ef;
+        isolation: isolate;
+        transition: opacity 720ms ease, visibility 720ms step-end;
+      }
+
+      .opening-parallax::after {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        background:
+          radial-gradient(circle at 54% 42%, rgba(255, 250, 226, 0.92), rgba(255, 221, 159, 0.38) 24%, transparent 58%),
+          rgba(255, 239, 205, 0.08);
+        content: "";
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 720ms ease;
+      }
+
+      .opening-parallax.entering::after {
+        opacity: 0.16;
+      }
+
+      .opening-parallax.leaving::after {
+        opacity: 0.62;
+      }
+
+      .opening-parallax.leaving {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .opening-scene {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: #101811;
+        transform: scale(1);
+        transform-origin: 52% 48%;
+        transition:
+          transform 1950ms cubic-bezier(0.18, 0.72, 0.16, 1),
+          filter 1950ms cubic-bezier(0.18, 0.72, 0.16, 1);
+        will-change: transform, filter;
+      }
+
+      .opening-parallax.entering .opening-scene {
+        filter: brightness(1.12) saturate(1.08) blur(1px);
+        transform: scale(2.55);
+      }
+
+      .opening-scene::before,
+      .opening-scene::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        pointer-events: none;
+      }
+
+      .opening-scene::before {
+        z-index: 8;
+        background: linear-gradient(180deg, rgba(5, 10, 7, 0.38) 0%, rgba(6, 11, 8, 0.15) 39%, rgba(4, 9, 6, 0.46) 100%);
+      }
+
+      .opening-scene::after {
+        z-index: 9;
+        background:
+          radial-gradient(ellipse 55% 43% at 50% 47%, rgba(255, 242, 208, 0.06), transparent 72%),
+          radial-gradient(ellipse 95% 88% at 50% 48%, transparent 42%, rgba(5, 10, 7, 0.38) 100%);
+      }
+
+      .opening-layer {
+        position: absolute;
+        display: block;
+        aspect-ratio: 1;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate3d(
+          calc(var(--parallax-x, 0px) + var(--exit-x, 0px)),
+          calc(var(--parallax-y, 0px) + var(--exit-y, 0px)),
+          0
+        ) scale(var(--layer-scale, 1));
+        transition: opacity 720ms ease, filter 500ms ease;
+        will-change: transform, opacity;
+      }
+
+      .opening-layer img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+
+      .opening-parallax.ready .opening-layer {
+        opacity: var(--layer-opacity, 1);
+      }
+
+      .opening-layer-background {
+        z-index: 1;
+        inset: -3%;
+        width: auto;
+        height: auto;
+        aspect-ratio: auto;
+        --layer-scale: 1.02;
+        filter: saturate(0.9) contrast(1.04) brightness(0.76);
+      }
+
+      .opening-layer-background img {
+        object-fit: cover;
+      }
+
+      .opening-layer-flowers-far {
+        z-index: 2;
+        width: 116vw;
+        right: -8vw;
+        bottom: -32vw;
+        --layer-scale: 1.01;
+        --layer-opacity: 0.78;
+        filter: saturate(0.88) contrast(0.96);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 44%, #000 83%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, #000 44%, #000 83%, transparent 100%);
+      }
+
+      .opening-layer-flowers-mid {
+        z-index: 3;
+        width: 145vw;
+        right: -22.5vw;
+        bottom: -65vw;
+        --layer-scale: 1.01;
+        --layer-opacity: 0.54;
+        filter: saturate(0.78) contrast(0.9) blur(0.2px);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 68%, transparent 94%);
+        mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 68%, transparent 94%);
+      }
+
+      .opening-layer-canopy {
+        z-index: 4;
+        width: 110vw;
+        top: -28vw;
+        left: -5vw;
+        --layer-scale: 1.02;
+        filter: saturate(0.92) contrast(1.03) brightness(0.82);
+      }
+
+      .opening-layer-flowers-left {
+        z-index: 5;
+        width: min(63vw, 880px);
+        left: -7vw;
+        bottom: -5vw;
+        --layer-scale: 1.02;
+        -webkit-mask-image: linear-gradient(to right, #000 0 83%, transparent 100%);
+        mask-image: linear-gradient(to right, #000 0 83%, transparent 100%);
+      }
+
+      .opening-layer-flowers-right {
+        z-index: 6;
+        width: min(62vw, 880px);
+        right: -6vw;
+        bottom: -7vw;
+        --layer-scale: 1.02;
+        -webkit-mask-image: linear-gradient(to left, #000 0 88%, transparent 100%);
+        mask-image: linear-gradient(to left, #000 0 88%, transparent 100%);
+      }
+
+      .opening-layer-sunlight {
+        z-index: 7;
+        width: min(102vw, 1254px);
+        top: -18vh;
+        right: 4vw;
+        --layer-scale: 1.03;
+        --layer-opacity: 0.64;
+        filter: saturate(1.06) brightness(1.03);
+        mix-blend-mode: screen;
+      }
+
+      .opening-vignette {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(5, 10, 7, 0.2), transparent 28% 72%, rgba(5, 10, 7, 0.1)),
+          linear-gradient(180deg, rgba(5, 10, 7, 0.05) 38%, rgba(5, 10, 7, 0.3) 100%);
+      }
+
+      .opening-grain {
+        position: absolute;
+        inset: 0;
+        z-index: 11;
+        pointer-events: none;
+        opacity: 0.13;
+        background-image: radial-gradient(rgba(255,255,255,0.5) 0.55px, transparent 0.7px);
+        background-size: 4px 4px;
+        mix-blend-mode: soft-light;
+      }
+
+      .opening-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 12;
+        display: grid;
+        width: min(680px, 88vw);
+        justify-items: center;
+        text-align: center;
+        transform: translate(-50%, -52%);
+        opacity: 0;
+        transition: opacity 0.9s ease 0.45s, transform 0.9s ease 0.45s;
+      }
+
+      .opening-parallax.ready .opening-content {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+
+      .opening-kicker {
+        margin: 0 0 14px;
+        color: #f6dfb4;
+        font-size: 0.64rem;
+        font-weight: 700;
+        letter-spacing: 0.36em;
+        text-transform: uppercase;
+      }
+
+      .opening-title {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(3.8rem, 10vw, 7.4rem);
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: -0.075em;
+        line-height: 0.88;
+        text-shadow: 0 10px 35px rgba(0, 0, 0, 0.42);
+      }
+
+      .opening-title span {
+        color: #f0cc9a;
+        font-size: 0.62em;
+      }
+
+      .opening-copy {
+        width: min(520px, 82vw);
+        margin: 18px 0 22px;
+        color: rgba(255, 248, 239, 0.88);
+        font-family: var(--serif);
+        font-size: clamp(1rem, 2vw, 1.12rem);
+        font-style: italic;
+        line-height: 1.65;
+        text-shadow: 0 4px 24px rgba(0, 0, 0, 0.34);
+      }
+
+      .opening-note {
+        margin: 0 0 22px;
+        color: rgba(255, 248, 239, 0.72);
+        font-size: 0.65rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+
+      .opening-actions {
+        display: grid;
+        gap: 14px;
+        justify-items: center;
+      }
+
+      .opening-enter {
+        display: inline-flex;
+        min-width: 208px;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 15px 24px;
+        border: 1px solid rgba(255, 235, 199, 0.72);
+        border-radius: 999px;
+        background: rgba(18, 30, 21, 0.34);
+        color: #fffaf1;
+        cursor: pointer;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+        transition: transform 0.28s ease, background 0.28s ease, border-color 0.28s ease;
+      }
+
+      .opening-enter:hover {
+        background: rgba(155, 97, 54, 0.5);
+        border-color: #f6d69c;
+        transform: translateY(-3px);
+      }
+
+      .opening-enter span {
+        font-size: 1rem;
+        transition: transform 0.28s ease;
+      }
+
+      .opening-enter:hover span {
+        transform: translateX(4px);
+      }
+
+      .opening-hint {
+        margin: 0;
+        color: rgba(255, 248, 239, 0.68);
+        font-size: 0.6rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .opening-parallax.entering .opening-content {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.08);
+        transition:
+          opacity 420ms ease,
+          transform 1450ms cubic-bezier(0.18, 0.72, 0.16, 1);
+        transition-delay: 0s;
+      }
+
+      .opening-parallax.leaving .opening-content {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.16);
+        transition-delay: 0s;
+        transition-duration: 520ms;
+      }
+
+      .opening-parallax.entering .opening-layer {
+        --exit-x: 0px;
+        --exit-y: 0px;
+        transition:
+          opacity 720ms ease,
+          transform 1450ms cubic-bezier(0.18, 0.72, 0.16, 1),
+          filter 900ms ease;
+      }
+
+      .opening-parallax.entering .opening-layer-background {
+        --layer-scale: 1.1;
+      }
+
+      .opening-parallax.entering .opening-layer-flowers-far {
+        --layer-scale: 1.16;
+      }
+
+      .opening-parallax.entering .opening-layer-flowers-mid {
+        --layer-scale: 1.22;
+      }
+
+      .opening-parallax.entering .opening-layer-canopy {
+        --layer-scale: 1.28;
+      }
+
+      .opening-parallax.entering .opening-layer-flowers-left {
+        --layer-scale: 1.34;
+      }
+
+      .opening-parallax.entering .opening-layer-flowers-right {
+        --layer-scale: 1.38;
+      }
+
+      .opening-parallax.entering .opening-layer-sunlight {
+        --layer-scale: 1.2;
+        opacity: 1;
+        filter: saturate(1.24) brightness(1.7);
+      }
+
+      .opening-parallax.leaving .opening-layer {
+        filter: blur(2.4px);
+      }
+
+      @keyframes openingFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(var(--float, 10px)); }
+      }
+
+      .opening-parallax.ready .opening-layer img {
+        animation: openingFloat var(--float-duration, 12s) ease-in-out infinite;
+      }
+
+      .opening-layer-background img { --float: 2px; --float-duration: 19s; }
+      .opening-layer-flowers-far img { --float: 3px; --float-duration: 17s; }
+      .opening-layer-flowers-mid img { --float: 4px; --float-duration: 15s; }
+      .opening-layer-canopy img { --float: 5px; --float-duration: 16s; }
+      .opening-layer-flowers-left img { --float: 5px; --float-duration: 13s; }
+      .opening-layer-flowers-right img { --float: 5px; --float-duration: 12s; }
+      .opening-layer-sunlight img { --float: 3px; --float-duration: 18s; }
+
+      @media (max-width: 900px) {
+        .opening-layer-flowers-far {
+          width: 148vw;
+          right: -24vw;
+          bottom: -45vw;
+        }
+
+        .opening-layer-flowers-mid {
+          width: 186vw;
+          right: -43vw;
+          bottom: -89vw;
+        }
+
+        .opening-layer-canopy {
+          width: 154vw;
+          top: -42vw;
+          left: -27vw;
+        }
+
+        .opening-layer-flowers-left {
+          width: 82vw;
+          left: -17vw;
+          bottom: -4vw;
+        }
+
+        .opening-layer-flowers-right {
+          width: 79vw;
+          right: -14vw;
+          bottom: -5vw;
+        }
+
+        .opening-layer-sunlight {
+          width: 138vw;
+          top: -19vw;
+          right: -6vw;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .opening-content {
+          width: 90vw;
+        }
+
+        .opening-title {
+          font-size: clamp(3.2rem, 15vw, 5.6rem);
+        }
+
+        .opening-copy {
+          width: min(88vw, 420px);
+          margin: 16px 0 18px;
+          font-size: 0.98rem;
+        }
+
+        .opening-note,
+        .opening-hint {
+          font-size: 0.56rem;
+          letter-spacing: 0.14em;
+        }
+
+        .opening-enter {
+          min-width: 194px;
+          padding: 14px 22px;
+        }
+
+        .opening-content {
+          top: 48%;
+        }
+
+        .opening-parallax.entering .opening-scene {
+          transform: scale(2.18);
+          transform-origin: 50% 47%;
+        }
+
+        .opening-layer-flowers-left {
+          width: 91vw;
+          left: -25vw;
+        }
+
+        .opening-layer-flowers-right {
+          width: 88vw;
+          right: -18vw;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .opening-layer,
+        .opening-content,
+        .opening-enter,
+        .opening-layer img {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+
+      .site-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        display: grid;
+        width: 100%;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        padding: 22px clamp(22px, 4.5vw, 74px);
+      }
+
+      .brand {
+        font-family: var(--serif);
+        font-size: 1.3rem;
+        font-style: italic;
+      }
+
+      .brand i {
+        color: var(--orange);
+        font-style: normal;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: clamp(18px, 3vw, 44px);
+      }
+
+      .nav-links a,
+      .header-date {
+        position: relative;
+        color: #4f4c45;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .nav-links a::after {
+        position: absolute;
+        right: 0;
+        bottom: -6px;
+        left: 0;
+        height: 1px;
+        background: var(--orange);
+        content: "";
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      .header-date {
+        justify-self: end;
+      }
+
+      .mobile-menu-button {
+        display: none;
+        justify-self: end;
+        padding: 8px;
+        background: transparent;
+        cursor: pointer;
+        font-size: 1.3rem;
+      }
+
+      .hero {
+        position: relative;
+        display: grid;
+        min-height: 100svh;
+        place-items: center;
+        overflow: hidden;
+        padding: 108px clamp(20px, 6vw, 100px) 64px;
+        background:
+          radial-gradient(circle at 15% 30%, rgba(185, 109, 67, 0.13), transparent 28%),
+          radial-gradient(circle at 85% 70%, rgba(101, 112, 92, 0.14), transparent 30%),
+          var(--paper);
+      }
+
+      .hero-canvas {
+        position: relative;
+        width: min(1120px, 91vw);
+        height: min(690px, 73vh);
+        min-height: 540px;
+      }
+
+      .hero-photo {
+        position: absolute;
+        overflow: hidden;
+        margin: 0;
+        background: #d8cfbf;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-photo-main {
+        top: 5%;
+        left: 50%;
+        width: 56%;
+        height: 80%;
+        border-radius: 180px 180px 10px 10px;
+        transform: translateX(-50%);
+      }
+
+      .hero-photo-left-top {
+        top: 8%;
+        left: 0;
+        width: 25%;
+        height: 29%;
+        border: 8px solid var(--paper-light);
+        transform: rotate(-3deg);
+      }
+
+      .hero-photo-left-bottom {
+        bottom: 2%;
+        left: 7%;
+        width: 24%;
+        height: 32%;
+        border: 8px solid var(--paper-light);
+        transform: rotate(4deg);
+      }
+
+      .hero-photo-right-top {
+        top: 2%;
+        right: 3%;
+        width: 23%;
+        height: 30%;
+        border: 8px solid var(--paper-light);
+        transform: rotate(3deg);
+      }
+
+      .hero-photo-right-bottom {
+        right: 0;
+        bottom: 8%;
+        width: 26%;
+        height: 34%;
+        border: 8px solid var(--paper-light);
+        transform: rotate(-4deg);
+      }
+
+      .hero-title {
+        position: absolute;
+        top: 47%;
+        left: 50%;
+        z-index: 3;
+        width: 100%;
+        margin: 0;
+        color: #fffaf1;
+        font-family: var(--serif);
+        font-size: clamp(5rem, 11.5vw, 10.5rem);
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: -0.07em;
+        line-height: 0.82;
+        text-align: center;
+        text-shadow: 0 4px 30px rgba(39, 29, 20, 0.28);
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+      }
+
+      .hero-title span {
+        color: #f0c7a8;
+        font-size: 0.58em;
+      }
+
+      .hero-kicker {
+        position: absolute;
+        top: 1%;
+        left: 50%;
+        z-index: 4;
+        margin: 0;
+        color: var(--ink);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .hero-copy {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        z-index: 4;
+        width: min(520px, 82vw);
+        margin: 0;
+        color: #4e4a42;
+        font-family: var(--serif);
+        font-size: clamp(1rem, 1.5vw, 1.2rem);
+        font-style: italic;
+        line-height: 1.6;
+        text-align: center;
+        transform: translateX(-50%);
+      }
+
+      .scribble {
+        position: absolute;
+        z-index: 5;
+        color: var(--orange);
+        font-family: var(--serif);
+        font-size: 1rem;
+        font-style: italic;
+      }
+
+      .scribble-left {
+        bottom: 3%;
+        left: 1%;
+        transform: rotate(-7deg);
+      }
+
+      .scribble-right {
+        top: 35%;
+        right: 0;
+        transform: rotate(6deg);
+      }
+
+      .scroll-cue {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        z-index: 6;
+        display: grid;
+        gap: 8px;
+        justify-items: center;
+        color: var(--muted);
+        font-size: 0.57rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        transform: translateX(-50%);
+      }
+
+      .scroll-cue::after {
+        width: 1px;
+        height: 28px;
+        background: var(--orange);
+        content: "";
+        animation: scrollPulse 1.8s ease-in-out infinite;
+      }
+
+      .section {
+        position: relative;
+        padding: clamp(90px, 12vw, 180px) clamp(22px, 6vw, 100px);
+      }
+
+      .section-label {
+        margin: 0 0 20px;
+        color: var(--orange);
+        font-size: 0.64rem;
+        font-weight: 700;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+      }
+
+      .display-title {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(3.4rem, 8vw, 8rem);
+        font-weight: 400;
+        letter-spacing: -0.055em;
+        line-height: 0.92;
+      }
+
+      .intro-frame {
+        padding: clamp(28px, 4vw, 58px);
+        background: var(--paper-light);
+      }
+
+      .intro-photo {
+        position: relative;
+        min-height: 76vh;
+        overflow: hidden;
+        background: #a9a08e;
+      }
+
+      .intro-photo img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .intro-photo::after {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 45%, rgba(31, 27, 23, 0.58));
+        content: "";
+      }
+
+      .intro-caption {
+        position: absolute;
+        right: clamp(24px, 5vw, 70px);
+        bottom: clamp(28px, 5vw, 70px);
+        z-index: 2;
+        max-width: 630px;
+        color: white;
+        text-align: right;
+      }
+
+      .intro-caption span {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+      }
+
+      .intro-caption h2 {
+        margin: 15px 0 0;
+        font-family: var(--serif);
+        font-size: clamp(2.8rem, 6.5vw, 7rem);
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+      }
+
+      .story-section {
+        overflow: hidden;
+        background:
+          linear-gradient(rgba(48, 47, 42, 0.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(48, 47, 42, 0.055) 1px, transparent 1px),
+          var(--paper);
+        background-size: 42px 42px;
+      }
+
+      .story-heading {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: 1fr 0.8fr;
+        align-items: end;
+        gap: 50px;
+        margin: 0 auto clamp(60px, 9vw, 120px);
+      }
+
+      .story-heading-copy {
+        max-width: 440px;
+        margin: 0 0 8px auto;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-size: 1.06rem;
+        font-style: italic;
+        line-height: 1.8;
+      }
+
+      .story-stack {
+        position: relative;
+        display: grid;
+        max-width: 960px;
+        gap: 26px;
+        margin: 0 auto;
+      }
+
+      .story-card {
+        position: relative;
+        display: grid;
+        min-height: 430px;
+        grid-template-columns: 1fr 1fr;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--paper-light);
+        box-shadow: 0 18px 50px rgba(55, 44, 31, 0.1);
+      }
+
+      .story-card:nth-child(even) .story-card-photo {
+        order: 2;
+      }
+
+      .story-card-photo {
+        min-height: 430px;
+        overflow: hidden;
+      }
+
+      .story-card-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+      }
+
+      .story-card:hover .story-card-photo img {
+        transform: scale(1.035);
+      }
+
+      .story-card-copy {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(34px, 6vw, 72px);
+      }
+
+      .story-number {
+        margin-bottom: auto;
+        color: var(--orange);
+        font-family: var(--serif);
+        font-size: 0.9rem;
+        font-style: italic;
+      }
+
+      .story-card h3 {
+        margin: 36px 0 18px;
+        font-family: var(--serif);
+        font-size: clamp(2.2rem, 4.4vw, 4.5rem);
+        font-weight: 400;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+      }
+
+      .story-card p {
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-size: 1rem;
+        line-height: 1.75;
+      }
+
+      .story-date {
+        margin-top: auto;
+        padding-top: 30px;
+        color: var(--orange-dark);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .counter-section {
+        min-height: 92vh;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background: var(--paper-light);
+      }
+
+      .counter-art {
+        position: absolute;
+        inset: clamp(28px, 5vw, 74px);
+        overflow: hidden;
+        opacity: 0.68;
+        -webkit-mask-image: radial-gradient(ellipse 80% 70% at center, #000 48%, transparent 74%);
+        mask-image: radial-gradient(ellipse 80% 70% at center, #000 48%, transparent 74%);
+      }
+
+      .counter-art img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(0.76) contrast(0.9) brightness(1.05);
+      }
+
+      .counter-art::after {
+        position: absolute;
+        inset: 0;
+        background: rgba(242, 237, 227, 0.26);
+        content: "";
+      }
+
+      .counter-content {
+        position: relative;
+        z-index: 2;
+        width: min(900px, 92vw);
+        padding: 60px 30px;
+        text-align: center;
+      }
+
+      .counter-content .display-title {
+        font-style: italic;
+      }
+
+      .counter-grid {
+        display: grid;
+        max-width: 760px;
+        grid-template-columns: repeat(4, 1fr);
+        margin: 58px auto 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .counter-unit {
+        padding: 27px 14px 24px;
+      }
+
+      .counter-unit + .counter-unit {
+        border-left: 1px solid var(--line);
+      }
+
+      .counter-unit strong {
+        display: block;
+        font-family: var(--serif);
+        font-size: clamp(2rem, 5vw, 4.8rem);
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .counter-unit span {
+        display: block;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .moments-section {
+        background: var(--paper);
+      }
+
+      .moments-head {
+        display: flex;
+        max-width: 1180px;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        margin: 0 auto 74px;
+      }
+
+      .moments-note {
+        max-width: 330px;
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-style: italic;
+        line-height: 1.7;
+      }
+
+      .editorial-grid {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: 1.1fr 0.8fr 1fr;
+        grid-auto-rows: 260px;
+        gap: 18px;
+        margin: 0 auto;
+      }
+
+      .editorial-photo {
+        position: relative;
+        overflow: hidden;
+        background: #ddd3c4;
+        cursor: zoom-in;
+      }
+
+      .editorial-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+
+      .editorial-photo:hover img {
+        transform: scale(1.04);
+      }
+
+      .editorial-photo:nth-child(1) {
+        grid-row: span 2;
+      }
+
+      .editorial-photo:nth-child(2) {
+        grid-column: span 2;
+      }
+
+      .editorial-photo:nth-child(5) {
+        grid-column: span 2;
+      }
+
+      .editorial-photo span {
+        position: absolute;
+        right: 16px;
+        bottom: 14px;
+        color: white;
+        font-family: var(--serif);
+        font-size: 0.8rem;
+        font-style: italic;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      .films-section {
+        overflow: hidden;
+        background: var(--ink);
+        color: var(--paper-light);
+      }
+
+      .films-section .section-label {
+        color: #d89a75;
+      }
+
+      .films-head {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 30px;
+        margin: 0 auto 64px;
+      }
+
+      .films-head p {
+        max-width: 310px;
+        margin: 0 0 8px;
+        color: #c9c2b5;
+        font-family: var(--serif);
+        font-style: italic;
+        line-height: 1.7;
+      }
+
+      .film-grid {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin: 0 auto;
+      }
+
+      .film-card {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 9 / 14;
+        background: #151512;
+      }
+
+      .film-card:first-child {
+        aspect-ratio: auto;
+      }
+
+      .film-card video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .film-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        z-index: 2;
+        padding: 7px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        background: rgba(23, 23, 19, 0.35);
+        font-size: 0.54rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        backdrop-filter: blur(8px);
+      }
+
+      .gallery-section {
+        background: var(--paper-light);
+      }
+
+      .gallery-head {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 30px;
+        margin: 0 auto 70px;
+      }
+
+      .gallery-count {
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-size: 1rem;
+        font-style: italic;
+      }
+
+      .gallery-grid {
+        max-width: 1180px;
+        margin: 0 auto;
+        columns: 4;
+        column-gap: 14px;
+      }
+
+      .gallery-item {
+        position: relative;
+        width: 100%;
+        margin: 0 0 14px;
+        overflow: hidden;
+        break-inside: avoid;
+        background: var(--paper-deep);
+        cursor: zoom-in;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: auto;
+        transition: filter 0.35s ease, transform 0.7s ease;
+      }
+
+      .gallery-item:hover img {
+        filter: brightness(0.9);
+        transform: scale(1.025);
+      }
+
+      .gallery-item::after {
+        position: absolute;
+        right: 12px;
+        bottom: 10px;
+        color: white;
+        content: "+";
+        font-family: var(--serif);
+        font-size: 1.5rem;
+        opacity: 0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        transition: opacity 0.3s ease;
+      }
+
+      .gallery-item:hover::after {
+        opacity: 1;
+      }
+
+      .letter-section {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 15% 20%, rgba(185, 109, 67, 0.18), transparent 24%),
+          radial-gradient(circle at 88% 80%, rgba(101, 112, 92, 0.18), transparent 28%),
+          var(--paper);
+      }
+
+      .letter-layout {
+        display: grid;
+        width: min(1120px, 100%);
+        grid-template-columns: 0.85fr 1.15fr;
+        align-items: center;
+        gap: clamp(40px, 8vw, 120px);
+      }
+
+      .letter-photo-stack {
+        position: relative;
+        min-height: 560px;
+      }
+
+      .letter-photo {
+        position: absolute;
+        overflow: hidden;
+        border: 10px solid var(--paper-light);
+        box-shadow: var(--shadow);
+      }
+
+      .letter-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .letter-photo-one {
+        top: 0;
+        left: 5%;
+        width: 70%;
+        height: 72%;
+        transform: rotate(-5deg);
+      }
+
+      .letter-photo-two {
+        right: 0;
+        bottom: 0;
+        width: 60%;
+        height: 54%;
+        transform: rotate(6deg);
+      }
+
+      .letter-paper {
+        position: relative;
+        padding: clamp(42px, 6vw, 82px);
+        border: 1px solid rgba(48, 47, 42, 0.12);
+        background:
+          repeating-linear-gradient(transparent 0 32px, rgba(48, 47, 42, 0.05) 33px),
+          #faf6ec;
+        box-shadow: var(--shadow);
+      }
+
+      .letter-paper::before {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 46px;
+        height: 58px;
+        border: 1px dashed var(--orange);
+        color: var(--orange);
+        content: "B&T";
+        display: grid;
+        place-items: center;
+        font-family: var(--serif);
+        font-size: 0.7rem;
+        transform: rotate(3deg);
+      }
+
+      .letter-paper h2 {
+        margin: 0 0 28px;
+        font-family: var(--serif);
+        font-size: clamp(3rem, 6vw, 6rem);
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: -0.05em;
+        line-height: 0.9;
+      }
+
+      .letter-paper p {
+        margin: 0 0 20px;
+        font-family: var(--serif);
+        font-size: clamp(1rem, 1.5vw, 1.15rem);
+        line-height: 1.8;
+      }
+
+      .letter-sign {
+        margin-top: 36px !important;
+        color: var(--orange-dark);
+        font-size: 1.3rem !important;
+        font-style: italic;
+        text-align: right;
+      }
+
+      .finale {
+        position: relative;
+        display: grid;
+        min-height: 100svh;
+        place-items: center;
+        overflow: hidden;
+        color: white;
+        text-align: center;
+      }
+
+      .finale > img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .finale::after {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(rgba(29, 24, 20, 0.24), rgba(29, 24, 20, 0.62));
+        content: "";
+      }
+
+      .finale-copy {
+        position: relative;
+        z-index: 2;
+        width: min(900px, 88vw);
+      }
+
+      .finale-copy p {
+        margin: 0 0 28px;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+      }
+
+      .finale-copy h2 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(3rem, 7vw, 7.4rem);
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: -0.055em;
+        line-height: 0.98;
+      }
+
+      .finale-names {
+        display: block;
+        margin-top: 48px;
+        font-family: var(--serif);
+        font-size: 1.15rem;
+        font-style: italic;
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px clamp(22px, 5vw, 72px);
+        background: var(--ink);
+        color: #d8d1c5;
+        font-size: 0.6rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .footer a {
+        color: #d89a75;
+      }
+
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: grid;
+        visibility: hidden;
+        place-items: center;
+        padding: 28px 74px;
+        background: rgba(22, 21, 18, 0.94);
+        opacity: 0;
+        transition: opacity 0.35s ease, visibility 0.35s ease;
+      }
+
+      .lightbox.open {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .lightbox img {
+        max-width: min(1100px, 88vw);
+        max-height: 88vh;
+        object-fit: contain;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+      }
+
+      .lightbox-close,
+      .lightbox-nav {
+        position: absolute;
+        z-index: 2;
+        display: grid;
+        width: 46px;
+        height: 46px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        cursor: pointer;
+        transition: background 0.25s ease;
+      }
+
+      .lightbox-close:hover,
+      .lightbox-nav:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .lightbox-close {
+        top: 24px;
+        right: 24px;
+      }
+
+      .lightbox-prev {
+        top: 50%;
+        left: 22px;
+        transform: translateY(-50%);
+      }
+
+      .lightbox-next {
+        top: 50%;
+        right: 22px;
+        transform: translateY(-50%);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(36px);
+        transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @keyframes loading {
+        from {
+          transform: translateX(-101%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes scrollPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scaleY(0.45);
+          transform-origin: top;
+        }
+        50% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .site-header {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .nav-links,
+        .header-date {
+          display: none;
+        }
+
+        .mobile-menu-button {
+          display: block;
+        }
+
+        .hero-canvas {
+          height: 70vh;
+          min-height: 590px;
+        }
+
+        .hero-photo-main {
+          width: 68%;
+        }
+
+        .hero-photo-left-top,
+        .hero-photo-right-top {
+          width: 27%;
+        }
+
+        .hero-photo-left-bottom,
+        .hero-photo-right-bottom {
+          width: 29%;
+        }
+
+        .story-heading,
+        .films-head,
+        .gallery-head,
+        .letter-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .story-heading-copy {
+          margin-left: 0;
+        }
+
+        .film-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .gallery-grid {
+          columns: 3;
+        }
+
+        .letter-photo-stack {
+          width: min(620px, 92vw);
+          justify-self: center;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .hero {
+          padding: 86px 14px 54px;
+        }
+
+        .hero-canvas {
+          width: 100%;
+          height: 660px;
+          min-height: 0;
+        }
+
+        .hero-photo-main {
+          top: 10%;
+          width: 78%;
+          height: 65%;
+          border-radius: 120px 120px 8px 8px;
+        }
+
+        .hero-photo-left-top {
+          top: 2%;
+          left: -5%;
+          width: 36%;
+          height: 23%;
+        }
+
+        .hero-photo-right-top {
+          top: 4%;
+          right: -5%;
+          width: 34%;
+          height: 22%;
+        }
+
+        .hero-photo-left-bottom {
+          bottom: 7%;
+          left: -3%;
+          width: 38%;
+          height: 25%;
+        }
+
+        .hero-photo-right-bottom {
+          right: -4%;
+          bottom: 6%;
+          width: 39%;
+          height: 26%;
+        }
+
+        .hero-title {
+          top: 43%;
+          font-size: clamp(4.2rem, 21vw, 7rem);
+          white-space: normal;
+        }
+
+        .hero-kicker {
+          top: 0;
+          font-size: 0.52rem;
+        }
+
+        .hero-copy {
+          bottom: 2%;
+          font-size: 0.92rem;
+        }
+
+        .scribble {
+          display: none;
+        }
+
+        .scroll-cue {
+          display: none;
+        }
+
+        .intro-frame {
+          padding: 14px;
+        }
+
+        .intro-photo {
+          min-height: 70vh;
+        }
+
+        .story-card,
+        .story-card:nth-child(even) {
+          grid-template-columns: 1fr;
+        }
+
+        .story-card:nth-child(even) .story-card-photo {
+          order: 0;
+        }
+
+        .story-card-photo {
+          min-height: 360px;
+        }
+
+        .story-card-copy {
+          min-height: 360px;
+        }
+
+        .counter-section {
+          min-height: 80vh;
+        }
+
+        .counter-art {
+          inset: 0;
+        }
+
+        .counter-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .counter-unit:nth-child(3) {
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+
+        .counter-unit:nth-child(4) {
+          border-top: 1px solid var(--line);
+        }
+
+        .moments-head,
+        .films-head,
+        .gallery-head {
+          display: block;
+        }
+
+        .moments-note,
+        .films-head p,
+        .gallery-count {
+          margin-top: 24px;
+        }
+
+        .editorial-grid {
+          grid-template-columns: 1fr 1fr;
+          grid-auto-rows: 220px;
+        }
+
+        .editorial-photo:nth-child(1) {
+          grid-row: span 2;
+        }
+
+        .editorial-photo:nth-child(2),
+        .editorial-photo:nth-child(5) {
+          grid-column: auto;
+        }
+
+        .film-grid {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          padding-bottom: 16px;
+        }
+
+        .film-card {
+          min-width: 76vw;
+          scroll-snap-align: center;
+        }
+
+        .gallery-grid {
+          columns: 2;
+        }
+
+        .letter-photo-stack {
+          min-height: 440px;
+        }
+
+        .letter-paper {
+          padding: 54px 28px 38px;
+        }
+
+        .footer {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .lightbox {
+          padding: 64px 12px;
+        }
+
+        .lightbox img {
+          max-width: 96vw;
+          max-height: 80vh;
+        }
+
+        .lightbox-nav {
+          top: auto;
+          bottom: 14px;
+          transform: none;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .section {
+          padding-right: 18px;
+          padding-left: 18px;
+        }
+
+        .hero-canvas {
+          height: 610px;
+        }
+
+        .hero-title {
+          top: 42%;
+        }
+
+        .hero-copy {
+          width: 90%;
+        }
+
+        .story-card-photo {
+          min-height: 300px;
+        }
+
+        .story-card-copy {
+          min-height: 330px;
+          padding: 34px 26px;
+        }
+
+        .editorial-grid {
+          display: block;
+        }
+
+        .editorial-photo {
+          height: 330px;
+          margin-bottom: 12px;
+        }
+
+        .gallery-grid {
+          columns: 2;
+          column-gap: 8px;
+        }
+
+        .gallery-item {
+          margin-bottom: 8px;
+        }
+
+        .letter-photo-stack {
+          min-height: 370px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="intro-locked">
+    <div class="preloader" id="preloader" aria-hidden="true">
+      <div class="preloader-inner">
+        <div class="preloader-mark">B<span>&amp;</span>T</div>
+        <div class="preloader-line"></div>
+        <p>Our story is loading</p>
+      </div>
+    </div>
+
+
+
+    <section class="opening-parallax" id="openingParallax" aria-label="Màn hình mở đầu kỷ niệm">
+      <div class="opening-scene" id="openingScene">
+        <div class="opening-layer opening-layer-background" data-depth="4" aria-hidden="true">
+          <img src="pics/intro/background.png" alt="" />
+        </div>
+        <div class="opening-layer opening-layer-flowers-far" data-depth="8" aria-hidden="true">
+          <img src="pics/intro/flowers-far.png" alt="" />
+        </div>
+        <div class="opening-layer opening-layer-flowers-mid" data-depth="14" aria-hidden="true">
+          <img src="pics/intro/flowers-mid.png" alt="" />
+        </div>
+        <div class="opening-layer opening-layer-canopy" data-depth="18" aria-hidden="true">
+          <img src="pics/intro/canopy.png" alt="" />
+        </div>
+        <div class="opening-layer opening-layer-flowers-left" data-depth="26" aria-hidden="true">
+          <img src="pics/intro/flowers-left.png" alt="" />
+        </div>
+        <div class="opening-layer opening-layer-flowers-right" data-depth="30" aria-hidden="true">
+          <img src="pics/intro/flowers-right.png" alt="" />
+        </div>
+        <div class="opening-layer opening-layer-sunlight" data-depth="10" aria-hidden="true">
+          <img src="pics/intro/sunlight.png" alt="" />
+        </div>
+        <div class="opening-vignette" aria-hidden="true"></div>
+        <div class="opening-grain" aria-hidden="true"></div>
+
+        <div class="opening-content">
+          <p class="opening-kicker">25 · 07 · Anniversary</p>
+          <h1 class="opening-title">Bảo <span>&amp;</span> Trân</h1>
+          <p class="opening-copy">
+            Một khu vườn nhỏ mở ra trước khi câu chuyện bắt đầu — di chuyển chuột để cảm nhận từng lớp hoa,
+            rồi bấm vào bên dưới để bước vào thế giới của tụi mình.
+          </p>
+          <div class="opening-actions">
+            <p class="opening-note">Parallax floral intro</p>
+            <button class="opening-enter" id="enterStoryButton" type="button">
+              Bắt đầu câu chuyện <span>→</span>
+            </button>
+            <p class="opening-hint">Di chuyển chuột để thấy hiệu ứng chiều sâu</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <header class="site-header">
+      <a class="brand" href="#home">B<i>&amp;</i>T</a>
+      <nav class="nav-links" aria-label="Điều hướng chính">
+        <a href="#story">Câu chuyện</a>
+        <a href="#moments">Khoảnh khắc</a>
+        <a href="#gallery">Album</a>
+        <a href="#letter">Lá thư</a>
+      </nav>
+      <span class="header-date">25 · 04 · 2024</span>
+      <button class="mobile-menu-button" id="mobileMenu" aria-label="Mở danh sách mục">☰</button>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-canvas">
+          <p class="hero-kicker">A little story about us · since 2024</p>
+
+          <figure class="hero-photo hero-photo-main">
+            <img src="media/photos/img-6852.webp" alt="Bảo và Trân tại Hội An" fetchpriority="high" />
+          </figure>
+          <figure class="hero-photo hero-photo-left-top" data-parallax="-0.04">
+            <img src="media/photos/img-1082.webp" alt="Khoảnh khắc của Bảo và Trân" />
+          </figure>
+          <figure class="hero-photo hero-photo-left-bottom" data-parallax="0.05">
+            <img src="media/photos/fullsizerender.webp" alt="Bảo và Trân trong chuyến đi" />
+          </figure>
+          <figure class="hero-photo hero-photo-right-top" data-parallax="0.04">
+            <img src="media/photos/dsc0138140326.webp" alt="Kỷ niệm lễ tốt nghiệp" />
+          </figure>
+          <figure class="hero-photo hero-photo-right-bottom" data-parallax="-0.05">
+            <img src="media/photos/img-8588.webp" alt="Bảo và Trân bên hoàng hôn" />
+          </figure>
+
+          <h1 class="hero-title">Bảo <span>&amp;</span> Trân</h1>
+          <p class="hero-copy">
+            Một ngày tháng Tư bình thường đã trở thành ngày bắt đầu cho rất nhiều điều thật đẹp.
+          </p>
+          <span class="scribble scribble-left">25.04 — the beginning</span>
+          <span class="scribble scribble-right">you feel like home</span>
+        </div>
+        <a class="scroll-cue" href="#intro">Cuộn xuống</a>
+      </section>
+
+      <section class="intro-frame" id="intro">
+        <div class="intro-photo reveal">
+          <img src="media/photos/dsc0136140326.webp" alt="Bảo và Trân trong ngày tốt nghiệp" loading="lazy" />
+          <div class="intro-caption">
+            <span>Our favorite chapter</span>
+            <h2>Từ những điều bé xíu thành cả một vùng ký ức.</h2>
+          </div>
+        </div>
+      </section>
+
+      <section class="section story-section" id="story">
+        <div class="story-heading reveal">
+          <div>
+            <p class="section-label">Chapter one</p>
+            <h2 class="display-title">Our story</h2>
+          </div>
+          <p class="story-heading-copy">
+            Không phải câu chuyện nào cũng bắt đầu bằng một khoảnh khắc lớn. Chuyện của mình bắt đầu
+            bằng những cuộc trò chuyện, những lần gặp nhau và cảm giác muốn ở lại lâu hơn một chút.
+          </p>
+        </div>
+
+        <div class="story-stack">
+          <article class="story-card reveal">
+            <div class="story-card-photo">
+              <img src="media/photos/img-1848.webp" alt="Những ngày đầu của Bảo và Trân" loading="lazy" />
+            </div>
+            <div class="story-card-copy">
+              <span class="story-number">01 / 04</span>
+              <h3>Ngày mình bắt đầu</h3>
+              <p>
+                Ngày 25 tháng 4 năm 2024, hai người xa lạ quyết định cùng nhau viết nên một câu chuyện
+                mới. Khi ấy mình chưa biết câu chuyện sẽ dài bao lâu, chỉ biết là mình rất muốn tiếp tục.
+              </p>
+              <span class="story-date">25 April 2024</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal">
+            <div class="story-card-photo">
+              <img src="media/photos/img-2715.webp" alt="Một ngày bình thường của Bảo và Trân" loading="lazy" />
+            </div>
+            <div class="story-card-copy">
+              <span class="story-number">02 / 04</span>
+              <h3>Những ngày rất đỗi bình thường</h3>
+              <p>
+                Mình có những buổi hẹn giản dị, vài tấm ảnh ngộ nghĩnh và vô số khoảnh khắc chẳng cần
+                lý do. Chính những ngày bình thường ấy lại trở thành phần mình nhớ nhất.
+              </p>
+              <span class="story-date">Little moments, big memories</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal">
+            <div class="story-card-photo">
+              <img src="media/photos/img-3811.webp" alt="Bảo và Trân trong một dịp đặc biệt" loading="lazy" />
+            </div>
+            <div class="story-card-copy">
+              <span class="story-number">03 / 04</span>
+              <h3>Mình cùng lớn lên</h3>
+              <p>
+                Có niềm vui, có những lần chưa hiểu nhau, rồi lại học cách lắng nghe và nắm tay chặt hơn.
+                Cảm ơn Trân vì đã cùng Bảo trưởng thành qua từng ngày.
+              </p>
+              <span class="story-date">Growing, together</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal">
+            <div class="story-card-photo">
+              <img src="media/photos/img-6833.webp" alt="Chuyến đi của Bảo và Trân" loading="lazy" />
+            </div>
+            <div class="story-card-copy">
+              <span class="story-number">04 / 04</span>
+              <h3>Và những nơi mình đã đi</h3>
+              <p>
+                Thành phố nào cũng đẹp hơn khi trong khung hình có hai đứa. Mong rằng sau Hội An, biển,
+                núi và những chuyến xe dài, mình vẫn còn rất nhiều nơi để cùng nhau đặt chân đến.
+              </p>
+              <span class="story-date">The adventure continues</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section counter-section" id="time">
+        <div class="counter-art">
+          <img src="media/photos/img-6850.webp" alt="" loading="lazy" />
+        </div>
+        <div class="counter-content reveal">
+          <p class="section-label">Since the day we met</p>
+          <h2 class="display-title">Mình đã có nhau</h2>
+          <div class="counter-grid" aria-label="Thời gian Bảo và Trân đã bên nhau">
+            <div class="counter-unit"><strong id="days">000</strong><span>Ngày</span></div>
+            <div class="counter-unit"><strong id="hours">00</strong><span>Giờ</span></div>
+            <div class="counter-unit"><strong id="minutes">00</strong><span>Phút</span></div>
+            <div class="counter-unit"><strong id="seconds">00</strong><span>Giây</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section moments-section" id="moments">
+        <div class="moments-head reveal">
+          <div>
+            <p class="section-label">Little things, forever kept</p>
+            <h2 class="display-title">Favorite moments</h2>
+          </div>
+          <p class="moments-note">
+            Một chuyến đi, một bữa ăn, một lần chụp vội — những điều rất nhỏ nhưng mình muốn cất thật lâu.
+          </p>
+        </div>
+
+        <div class="editorial-grid reveal">
+          <figure class="editorial-photo" data-lightbox-src="media/photos/img-8588.webp">
+            <img src="media/photos/img-8588.webp" alt="Hoàng hôn của Bảo và Trân" loading="lazy" />
+            <span>our golden hour</span>
+          </figure>
+          <figure class="editorial-photo" data-lightbox-src="media/photos/fullsizerender.webp">
+            <img src="media/photos/fullsizerender.webp" alt="Chuyến đi cáp treo" loading="lazy" />
+            <span>up in the clouds</span>
+          </figure>
+          <figure class="editorial-photo" data-lightbox-src="media/photos/img-1030.webp">
+            <img src="media/photos/img-1030.webp" alt="Bảo và Trân trong trang phục truyền thống" loading="lazy" />
+            <span>same frame</span>
+          </figure>
+          <figure class="editorial-photo" data-lightbox-src="media/photos/dsc0095140326.webp">
+            <img src="media/photos/dsc0095140326.webp" alt="Một cột mốc đáng nhớ" loading="lazy" />
+            <span>proud of you</span>
+          </figure>
+          <figure class="editorial-photo" data-lightbox-src="media/photos/img-6852.webp">
+            <img src="media/photos/img-6852.webp" alt="Bảo và Trân tại Hội An" loading="lazy" />
+            <span>wherever, together</span>
+          </figure>
+          <figure class="editorial-photo" data-lightbox-src="media/photos/img-3867.webp">
+            <img src="media/photos/img-3867.webp" alt="Một khoảnh khắc bình yên" loading="lazy" />
+            <span>home is you</span>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section films-section" id="films">
+        <div class="films-head reveal">
+          <div>
+            <p class="section-label">Press play</p>
+            <h2 class="display-title">Moving memories</h2>
+          </div>
+          <p>Không chỉ có ảnh. Có những giây phút vẫn còn chuyển động, như ngày hôm ấy chưa hề trôi qua.</p>
+        </div>
+        <div class="film-grid reveal">
+          <div class="film-card">
+            <span class="film-badge">Memory 01</span>
+            <video controls playsinline preload="metadata" poster="media/photos/img-4598.webp">
+              <source src="media/videos/copy-9cfa1f00-4426-494e-8c9c-58606aea1e6a.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="film-card">
+            <span class="film-badge">Memory 02</span>
+            <video controls playsinline preload="metadata" poster="media/photos/img-4592.webp">
+              <source src="media/videos/img-4592.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="film-card">
+            <span class="film-badge">Memory 03</span>
+            <video controls playsinline preload="metadata" poster="media/photos/img-6761.webp">
+              <source src="media/videos/img-6718.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="film-card">
+            <span class="film-badge">Memory 04</span>
+            <video controls playsinline preload="metadata" poster="media/photos/img-0902.webp">
+              <source src="media/videos/db2e2af99ec84001a0348ced49e9fa9d.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section class="section gallery-section" id="gallery">
+        <div class="gallery-head reveal">
+          <div>
+            <p class="section-label">The photo diary</p>
+            <h2 class="display-title">All our days</h2>
+          </div>
+          <span class="gallery-count">54 tấm ảnh · vô số câu chuyện</span>
+        </div>
+        <div class="gallery-grid" id="galleryGrid" aria-label="Album ảnh của Bảo và Trân"></div>
+      </section>
+
+      <section class="section letter-section" id="letter">
+        <div class="letter-layout">
+          <div class="letter-photo-stack reveal" aria-hidden="true">
+            <figure class="letter-photo letter-photo-one">
+              <img src="media/photos/1i3qk2t39-52akhn.webp" alt="" loading="lazy" />
+            </figure>
+            <figure class="letter-photo letter-photo-two">
+              <img src="media/photos/5580cf4c-8f8b-413a-bb13-c8dd8b476d06.webp" alt="" loading="lazy" />
+            </figure>
+          </div>
+
+          <article class="letter-paper reveal">
+            <p class="section-label">A note from Bảo</p>
+            <h2>Gửi Trân,</h2>
+            <p>
+              Cảm ơn em vì đã xuất hiện và biến những ngày rất bình thường của anh thành những ngày đáng nhớ.
+              Cảm ơn em vì những lần kiên nhẫn, những tiếng cười, những chuyến đi và cả những lúc mình cùng nhau
+              học cách yêu thương tốt hơn.
+            </p>
+            <p>
+              Anh không biết sau này mình sẽ có thêm bao nhiêu tấm ảnh, nhưng anh mong người đứng cạnh anh trong
+              những khung hình tiếp theo vẫn luôn là em. Chúc cho Bảo và Trân vẫn sẽ chọn nhau, không chỉ trong
+              những ngày vui mà cả những ngày chưa hoàn hảo.
+            </p>
+            <p class="letter-sign">Thương em,<br />Bảo ♡</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="finale">
+        <img src="media/photos/img-8588.webp" alt="Bảo và Trân dưới hoàng hôn" loading="lazy" />
+        <div class="finale-copy reveal">
+          <p>To the next chapter</p>
+          <h2>Em là người anh muốn cùng làm mọi điều, trong những năm tháng còn lại.</h2>
+          <span class="finale-names">Bảo &amp; Trân · 25.04.2024 — forever</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Made with love by Bảo</span>
+      <a href="#home">Trở về đầu trang ↑</a>
+      <span>25 · 07 · 2026</span>
+    </footer>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Xem ảnh phóng to">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Đóng ảnh">×</button>
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Ảnh trước">←</button>
+      <img id="lightboxImage" src="" alt="Ảnh kỷ niệm của Bảo và Trân" />
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Ảnh tiếp theo">→</button>
+    </div>
+
+    <script>
+      const photos = [
+        "1i3qk2t39-52akhn.webp",
+        "5580cf4c-8f8b-413a-bb13-c8dd8b476d06.webp",
+        "66780b2bea8cefeb1a992c76020f7c65.webp",
+        "99b91363-f77d-4ec1-bbc4-fb945058435f.webp",
+        "dsc0095140326.webp",
+        "dsc0136140326.webp",
+        "dsc0138140326.webp",
+        "fullsizerender.webp",
+        "img-0902.webp",
+        "img-1030.webp",
+        "img-1082.webp",
+        "img-1090.webp",
+        "img-1146.webp",
+        "img-1147.webp",
+        "img-1617.webp",
+        "img-1781.webp",
+        "img-1848.webp",
+        "img-2249.webp",
+        "img-2266.webp",
+        "img-2393.webp",
+        "img-2483.webp",
+        "img-2715.webp",
+        "img-2798.webp",
+        "img-3175.webp",
+        "img-3180.webp",
+        "img-3306.webp",
+        "img-3644.webp",
+        "img-3648.webp",
+        "img-3802.webp",
+        "img-3811.webp",
+        "img-3855.webp",
+        "img-3867.webp",
+        "img-3936.webp",
+        "img-3941.webp",
+        "img-3942.webp",
+        "img-4078.webp",
+        "img-4085.webp",
+        "img-4336.webp",
+        "img-4366.webp",
+        "img-4598.webp",
+        "img-5343.webp",
+        "img-5609.webp",
+        "img-6076.webp",
+        "img-6371.webp",
+        "img-6379.webp",
+        "img-6396.webp",
+        "img-6761.webp",
+        "img-6833.webp",
+        "img-6834.webp",
+        "img-6839.webp",
+        "img-6850.webp",
+        "img-6851.webp",
+        "img-6852.webp",
+        "img-8588.webp"
+      ].map((name) => `media/photos/${name}`);
+
+      const gallery = document.getElementById("galleryGrid");
+      photos.forEach((src, index) => {
+        const figure = document.createElement("figure");
+        figure.className = "gallery-item reveal";
+        figure.dataset.lightboxSrc = src;
+        figure.innerHTML = `<img src="${src}" alt="Kỷ niệm ${index + 1} của Bảo và Trân" loading="lazy" />`;
+        gallery.appendChild(figure);
+      });
+
+
+
+      const openingParallax = document.getElementById("openingParallax");
+      const openingScene = document.getElementById("openingScene");
+      const openingLayers = Array.from(openingScene.querySelectorAll(".opening-layer"));
+      const enterStoryButton = document.getElementById("enterStoryButton");
+      const reduceOpeningMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+      let openingActive = true;
+      let targetX = 0;
+      let targetY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let openingFrame = null;
+      let orientationOrigin = null;
+      let fadeFallback = null;
+
+      const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+      const lerp = (from, to, amount) => from + (to - from) * amount;
+
+      function renderOpeningParallax() {
+        openingFrame = null;
+        if (!openingActive || reduceOpeningMotion) return;
+
+        currentX = lerp(currentX, targetX, 0.085);
+        currentY = lerp(currentY, targetY, 0.085);
+        if (Math.abs(targetX - currentX) < 0.002) currentX = targetX;
+        if (Math.abs(targetY - currentY) < 0.002) currentY = targetY;
+
+        openingLayers.forEach((layer) => {
+          const depth = Number(layer.dataset.depth || 0);
+          layer.style.setProperty("--parallax-x", `${(currentX * depth).toFixed(2)}px`);
+          layer.style.setProperty("--parallax-y", `${(currentY * depth * 0.72).toFixed(2)}px`);
+        });
+
+        if (currentX !== targetX || currentY !== targetY) {
+          openingFrame = window.requestAnimationFrame(renderOpeningParallax);
+        }
+      }
+
+      function requestOpeningFrame() {
+        if (!openingActive || reduceOpeningMotion || openingFrame !== null) return;
+        openingFrame = window.requestAnimationFrame(renderOpeningParallax);
+      }
+
+      function setOpeningTargetFromPoint(clientX, clientY) {
+        if (!openingActive) return;
+        const rect = openingScene.getBoundingClientRect();
+        targetX = clamp(((clientX - rect.left) / rect.width - 0.5) * -2, -1, 1);
+        targetY = clamp(((clientY - rect.top) / rect.height - 0.5) * -2, -1, 1);
+        requestOpeningFrame();
+      }
+
+      function resetOpeningTarget() {
+        targetX = 0;
+        targetY = 0;
+        requestOpeningFrame();
+      }
+
+      function onOpeningPointerMove(event) {
+        setOpeningTargetFromPoint(event.clientX, event.clientY);
+      }
+
+      function onOpeningOrientation(event) {
+        if (!openingActive || typeof event.beta !== "number" || typeof event.gamma !== "number") return;
+        if (!orientationOrigin) {
+          orientationOrigin = { beta: event.beta, gamma: event.gamma };
+        }
+        targetX = clamp((event.gamma - orientationOrigin.gamma) / 22, -0.42, 0.42);
+        targetY = clamp((event.beta - orientationOrigin.beta) / 28, -0.28, 0.28);
+        requestOpeningFrame();
+      }
+
+      function removeOpeningInputs() {
+        openingScene.removeEventListener("pointermove", onOpeningPointerMove);
+        openingScene.removeEventListener("pointerleave", resetOpeningTarget);
+        openingScene.removeEventListener("pointercancel", resetOpeningTarget);
+        window.removeEventListener("deviceorientation", onOpeningOrientation);
+      }
+
+      function removeOpening() {
+        if (!openingParallax.isConnected) return;
+        if (openingFrame !== null) window.cancelAnimationFrame(openingFrame);
+        if (fadeFallback !== null) window.clearTimeout(fadeFallback);
+        removeOpeningInputs();
+        document.body.classList.remove("intro-locked");
+        openingParallax.remove();
+      }
+
+      function finishOpeningFade(event) {
+        if (event.target !== openingParallax || event.propertyName !== "opacity") return;
+        openingParallax.removeEventListener("transitionend", finishOpeningFade);
+        removeOpening();
+      }
+
+      function enterStory() {
+        if (!openingActive) return;
+        openingActive = false;
+        enterStoryButton.disabled = true;
+        enterStoryButton.setAttribute("aria-disabled", "true");
+        removeOpeningInputs();
+        if (openingFrame !== null) window.cancelAnimationFrame(openingFrame);
+
+        openingParallax.classList.add("entering");
+        const cameraPushDuration = reduceOpeningMotion ? 0 : 1500;
+        window.setTimeout(() => {
+          if (!openingParallax.isConnected) return;
+          openingParallax.addEventListener("transitionend", finishOpeningFade);
+          openingParallax.classList.add("leaving");
+          fadeFallback = window.setTimeout(removeOpening, reduceOpeningMotion ? 50 : 980);
+        }, cameraPushDuration);
+      }
+
+      if (!reduceOpeningMotion) {
+        if (!coarsePointer) {
+          openingScene.addEventListener("pointermove", onOpeningPointerMove, { passive: true });
+          openingScene.addEventListener("pointerleave", resetOpeningTarget, { passive: true });
+          openingScene.addEventListener("pointercancel", resetOpeningTarget, { passive: true });
+        }
+        // No permission prompt is made. On mobile browsers that provide sensor
+        // events this adds a subtle tilt; otherwise the CSS float is the fallback.
+        if (coarsePointer && "DeviceOrientationEvent" in window) {
+          window.addEventListener("deviceorientation", onOpeningOrientation, { passive: true });
+        }
+      }
+
+      enterStoryButton.addEventListener("click", enterStory);
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+
+      const startDate = new Date("2024-04-25T00:00:00+07:00").getTime();
+      const counterElements = {
+        days: document.getElementById("days"),
+        hours: document.getElementById("hours"),
+        minutes: document.getElementById("minutes"),
+        seconds: document.getElementById("seconds")
+      };
+
+      function updateCounter() {
+        const difference = Math.max(0, Date.now() - startDate);
+        counterElements.days.textContent = String(Math.floor(difference / 86400000)).padStart(3, "0");
+        counterElements.hours.textContent = String(Math.floor((difference / 3600000) % 24)).padStart(2, "0");
+        counterElements.minutes.textContent = String(Math.floor((difference / 60000) % 60)).padStart(2, "0");
+        counterElements.seconds.textContent = String(Math.floor((difference / 1000) % 60)).padStart(2, "0");
+      }
+
+      updateCounter();
+      window.setInterval(updateCounter, 1000);
+
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImage = document.getElementById("lightboxImage");
+      let currentPhoto = 0;
+
+      function openLightbox(src) {
+        currentPhoto = Math.max(0, photos.indexOf(src));
+        lightboxImage.src = src;
+        lightbox.classList.add("open");
+        document.body.classList.add("no-scroll");
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        document.body.classList.remove("no-scroll");
+      }
+
+      function changePhoto(direction) {
+        currentPhoto = (currentPhoto + direction + photos.length) % photos.length;
+        lightboxImage.src = photos[currentPhoto];
+      }
+
+      document.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-lightbox-src]");
+        if (target) openLightbox(target.dataset.lightboxSrc);
+      });
+
+      document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+      document.getElementById("lightboxPrev").addEventListener("click", () => changePhoto(-1));
+      document.getElementById("lightboxNext").addEventListener("click", () => changePhoto(1));
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (!lightbox.classList.contains("open")) return;
+        if (event.key === "Escape") closeLightbox();
+        if (event.key === "ArrowLeft") changePhoto(-1);
+        if (event.key === "ArrowRight") changePhoto(1);
+      });
+
+      const mobileMenu = document.getElementById("mobileMenu");
+      mobileMenu.addEventListener("click", () => {
+        document.getElementById("story").scrollIntoView({ behavior: "smooth" });
+      });
+
+      const parallaxItems = document.querySelectorAll("[data-parallax]");
+      let ticking = false;
+      function updateParallax() {
+        const y = Math.min(window.scrollY, window.innerHeight);
+        parallaxItems.forEach((item) => {
+          const speed = Number(item.dataset.parallax);
+          item.style.translate = `0 ${y * speed}px`;
+        });
+        ticking = false;
+      }
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            window.requestAnimationFrame(updateParallax);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+
+
+      window.addEventListener("load", () => {
+        window.setTimeout(() => {
+          document.getElementById("preloader").classList.add("done");
+          document.getElementById("openingParallax").classList.add("ready");
+        }, 650);
+      });
+
+    </script>
+  </body>
+</html>
