@@ -10,6 +10,14 @@
     />
     <title>Bảo &amp; Trân — Our Story</title>
     <style>
+
+      @font-face {
+        font-family: "TH Retalin";
+        src: url("font/TH-Retalin-Regular.otf") format("opentype");
+        font-weight: 400;
+        font-style: bold;
+        font-display: swap;
+      }
       :root {
         --paper: #f2ede3;
         --paper-light: #faf7ef;
@@ -92,7 +100,7 @@
       }
 
       .preloader-mark {
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(4rem, 12vw, 8rem);
         font-style: italic;
         line-height: 1;
@@ -362,10 +370,12 @@
 
       .opening-title {
         margin: 0;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
+        font-style: normal;
         font-size: clamp(3.8rem, 10vw, 7.4rem);
         font-style: italic;
-        font-weight: 400;
+        font-weight: 700;
+        -webkit-text-stroke: 0.4px currentColor;
         letter-spacing: -0.075em;
         line-height: 0.88;
         text-shadow: 0 10px 35px rgba(0, 0, 0, 0.42);
@@ -380,7 +390,7 @@
         width: min(520px, 82vw);
         margin: 18px 0 22px;
         color: rgba(255, 248, 239, 0.88);
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(1rem, 2vw, 1.12rem);
         font-style: italic;
         line-height: 1.65;
@@ -402,24 +412,90 @@
       }
 
       .opening-enter {
+        position: relative;
+        isolation: isolate;
         display: inline-flex;
         min-width: 208px;
+        overflow: hidden;
         align-items: center;
         justify-content: center;
         gap: 14px;
         padding: 15px 24px;
-        border: 1px solid rgba(255, 235, 199, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.42);
         border-radius: 999px;
-        background: rgba(18, 30, 21, 0.34);
+        background:
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.26),
+            rgba(255, 255, 255, 0.08) 45%,
+            rgba(255, 230, 185, 0.12)
+          );
         color: #fffaf1;
         cursor: pointer;
         font-size: 0.66rem;
         font-weight: 700;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
-        transition: transform 0.28s ease, background 0.28s ease, border-color 0.28s ease;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.55),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+          0 12px 35px rgba(0, 0, 0, 0.22),
+          0 0 24px rgba(255, 224, 174, 0.08);
+        transition:
+          transform 0.35s ease,
+          border-color 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+
+      .opening-enter::before {
+        position: absolute;
+        top: -120%;
+        left: -35%;
+        z-index: -1;
+        width: 48%;
+        height: 340%;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.24);
+        content: "";
+        filter: blur(18px);
+        transform: rotate(22deg);
+        transition: left 0.65s ease;
+      }
+
+      .opening-enter::after {
+        position: absolute;
+        inset: 2px;
+        z-index: -2;
+        border-radius: inherit;
+        background:
+          radial-gradient(
+            circle at 30% 15%,
+            rgba(255, 255, 255, 0.22),
+            transparent 42%
+          );
+        content: "";
+        pointer-events: none;
+      }
+
+      .opening-enter:hover {
+        border-color: rgba(255, 255, 255, 0.52);
+        background:
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.32),
+            rgba(255, 255, 255, 0.12)
+          );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.72),
+          0 16px 42px rgba(0, 0, 0, 0.28),
+          0 0 32px rgba(255, 222, 166, 0.18);
+      }
+
+      .opening-enter:hover::before {
+        left: 95%;
       }
 
       .opening-enter:hover {
@@ -628,7 +704,7 @@
       }
 
       .brand {
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 1.3rem;
         font-style: italic;
       }
@@ -719,6 +795,43 @@
         object-fit: cover;
       }
 
+
+      .hero-photo-scratch {
+        touch-action: none;
+      }
+
+      .hero-photo-scratch .scratch-canvas {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        cursor: crosshair;
+        touch-action: none;
+        opacity: 1;
+        transition: opacity 560ms ease;
+      }
+
+      .hero-photo-scratch .scratch-canvas.is-cleared {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .hero-photo-scratch.scratched img {
+        animation: scratchPhotoReveal 720ms cubic-bezier(0.2, 0.72, 0.18, 1);
+      }
+
+      @keyframes scratchPhotoReveal {
+        0% {
+          filter: brightness(0.9) saturate(0.88);
+          transform: scale(1.04);
+        }
+        100% {
+          filter: none;
+          transform: scale(1);
+        }
+      }
+
       .hero-photo-main {
         top: 5%;
         left: 50%;
@@ -772,7 +885,7 @@
         width: 100%;
         margin: 0;
         color: #fffaf1;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(5rem, 11.5vw, 10.5rem);
         font-style: italic;
         font-weight: 400;
@@ -812,7 +925,7 @@
         width: min(520px, 82vw);
         margin: 0;
         color: #4e4a42;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(1rem, 1.5vw, 1.2rem);
         font-style: italic;
         line-height: 1.6;
@@ -824,7 +937,7 @@
         position: absolute;
         z-index: 5;
         color: var(--orange);
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 1rem;
         font-style: italic;
       }
@@ -880,11 +993,34 @@
 
       .display-title {
         margin: 0;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(3.4rem, 8vw, 8rem);
         font-weight: 400;
         letter-spacing: -0.055em;
         line-height: 0.92;
+      }
+
+      .opening-enter-bottom {
+        position: absolute;
+        bottom: clamp(24px, 6vh, 64px);
+        left: 50%;
+        z-index: 20;
+        transform: translateX(-50%);
+      }
+
+      .opening-enter-bottom:hover {
+        transform: translateX(-50%) translateY(-3px);
+      }
+
+      .opening-parallax.entering .opening-enter-bottom {
+        transform: translateX(-50%) scale(1.08);
+        transition: transform 1450ms cubic-bezier(0.18, 0.72, 0.16, 1);
+      }
+
+      .opening-parallax.leaving .opening-enter-bottom {
+        opacity: 0;
+        transform: translateX(-50%) scale(1.16);
+        transition: opacity 520ms ease, transform 520ms ease;
       }
 
       .intro-frame {
@@ -933,7 +1069,7 @@
 
       .intro-caption h2 {
         margin: 15px 0 0;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(2.8rem, 6.5vw, 7rem);
         font-style: italic;
         font-weight: 400;
@@ -963,7 +1099,7 @@
         max-width: 440px;
         margin: 0 0 8px auto;
         color: var(--muted);
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 1.06rem;
         font-style: italic;
         line-height: 1.8;
@@ -1018,14 +1154,14 @@
       .story-number {
         margin-bottom: auto;
         color: var(--orange);
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 0.9rem;
         font-style: italic;
       }
 
       .story-card h3 {
         margin: 36px 0 18px;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(2.2rem, 4.4vw, 4.5rem);
         font-weight: 400;
         letter-spacing: -0.04em;
@@ -1035,7 +1171,7 @@
       .story-card p {
         margin: 0;
         color: var(--muted);
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 1rem;
         line-height: 1.75;
       }
@@ -1112,7 +1248,7 @@
 
       .counter-unit strong {
         display: block;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(2rem, 5vw, 4.8rem);
         font-weight: 400;
         line-height: 1;
@@ -1145,7 +1281,7 @@
         max-width: 330px;
         margin: 0 0 8px;
         color: var(--muted);
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-style: italic;
         line-height: 1.7;
       }
@@ -1194,7 +1330,7 @@
         right: 16px;
         bottom: 14px;
         color: white;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 0.8rem;
         font-style: italic;
         text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
@@ -1223,7 +1359,7 @@
         max-width: 310px;
         margin: 0 0 8px;
         color: #c9c2b5;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-style: italic;
         line-height: 1.7;
       }
@@ -1285,7 +1421,7 @@
       .gallery-count {
         margin-bottom: 12px;
         color: var(--muted);
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 1rem;
         font-style: italic;
       }
@@ -1324,7 +1460,7 @@
         bottom: 10px;
         color: white;
         content: "+";
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 1.5rem;
         opacity: 0;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
@@ -1409,14 +1545,14 @@
         content: "B&T";
         display: grid;
         place-items: center;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 0.7rem;
         transform: rotate(3deg);
       }
 
       .letter-paper h2 {
         margin: 0 0 28px;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(3rem, 6vw, 6rem);
         font-style: italic;
         font-weight: 400;
@@ -1426,7 +1562,7 @@
 
       .letter-paper p {
         margin: 0 0 20px;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(1rem, 1.5vw, 1.15rem);
         line-height: 1.8;
       }
@@ -1480,7 +1616,7 @@
 
       .finale-copy h2 {
         margin: 0;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: clamp(3rem, 7vw, 7.4rem);
         font-style: italic;
         font-weight: 400;
@@ -1491,7 +1627,7 @@
       .finale-names {
         display: block;
         margin-top: 48px;
-        font-family: var(--serif);
+        font-family: "TH Retalin", Georgia, serif;
         font-size: 1.15rem;
         font-style: italic;
       }
@@ -1957,17 +2093,14 @@
           <p class="opening-kicker">25 · 07 · Anniversary</p>
           <h1 class="opening-title">Bảo <span>&amp;</span> Trân</h1>
           <p class="opening-copy">
-            Một khu vườn nhỏ mở ra trước khi câu chuyện bắt đầu — di chuyển chuột để cảm nhận từng lớp hoa,
+            Một khu vườn nhỏ mở ra trước khi câu chuyện bắt đầu
             rồi bấm vào bên dưới để bước vào thế giới của tụi mình.
           </p>
-          <div class="opening-actions">
-            <p class="opening-note">Parallax floral intro</p>
-            <button class="opening-enter" id="enterStoryButton" type="button">
-              Bắt đầu câu chuyện <span>→</span>
-            </button>
-            <p class="opening-hint">Di chuyển chuột để thấy hiệu ứng chiều sâu</p>
-          </div>
         </div>
+
+        <button class="opening-enter opening-enter-bottom" id="enterStoryButton" type="button">
+          Bắt đầu câu chuyện <span>→</span>
+        </button>
       </div>
     </section>
 
@@ -1991,17 +2124,21 @@
           <figure class="hero-photo hero-photo-main">
             <img src="media/photos/img-6852.webp" alt="Bảo và Trân tại Hội An" fetchpriority="high" />
           </figure>
-          <figure class="hero-photo hero-photo-left-top" data-parallax="-0.04">
+          <figure class="hero-photo hero-photo-left-top hero-photo-scratch" data-parallax="-0.04">
             <img src="media/photos/img-1082.webp" alt="Khoảnh khắc của Bảo và Trân" />
+            <canvas class="scratch-canvas" tabindex="0" aria-label="Cào để mở khoảnh khắc góc trên bên trái"></canvas>
           </figure>
-          <figure class="hero-photo hero-photo-left-bottom" data-parallax="0.05">
+          <figure class="hero-photo hero-photo-left-bottom hero-photo-scratch" data-parallax="0.05">
             <img src="media/photos/fullsizerender.webp" alt="Bảo và Trân trong chuyến đi" />
+            <canvas class="scratch-canvas" tabindex="0" aria-label="Cào để mở khoảnh khắc góc dưới bên trái"></canvas>
           </figure>
-          <figure class="hero-photo hero-photo-right-top" data-parallax="0.04">
+          <figure class="hero-photo hero-photo-right-top hero-photo-scratch" data-parallax="0.04">
             <img src="media/photos/dsc0138140326.webp" alt="Kỷ niệm lễ tốt nghiệp" />
+            <canvas class="scratch-canvas" tabindex="0" aria-label="Cào để mở khoảnh khắc góc trên bên phải"></canvas>
           </figure>
-          <figure class="hero-photo hero-photo-right-bottom" data-parallax="-0.05">
+          <figure class="hero-photo hero-photo-right-bottom hero-photo-scratch" data-parallax="-0.05">
             <img src="media/photos/img-8588.webp" alt="Bảo và Trân bên hoàng hôn" />
+            <canvas class="scratch-canvas" tabindex="0" aria-label="Cào để mở khoảnh khắc góc dưới bên phải"></canvas>
           </figure>
 
           <h1 class="hero-title">Bảo <span>&amp;</span> Trân</h1>
@@ -2321,6 +2458,161 @@
       });
 
 
+
+      const scratchCards = document.querySelectorAll(".hero-photo-scratch");
+
+      function setupScratchCard(card) {
+        const canvas = card.querySelector(".scratch-canvas");
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        let drawing = false;
+        let cleared = false;
+        let previousPoint = null;
+        let drawCount = 0;
+        let pixelRatio = 1;
+
+        function drawScratchCover() {
+          const rect = card.getBoundingClientRect();
+          if (!rect.width || !rect.height || cleared) return;
+
+          pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = Math.max(1, Math.round(rect.width * pixelRatio));
+          canvas.height = Math.max(1, Math.round(rect.height * pixelRatio));
+          canvas.style.width = `${rect.width}px`;
+          canvas.style.height = `${rect.height}px`;
+          context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+          context.globalCompositeOperation = "source-over";
+
+          const gradient = context.createLinearGradient(0, 0, rect.width, rect.height);
+          gradient.addColorStop(0, "#9eb7a6");
+          gradient.addColorStop(0.52, "#78947f");
+          gradient.addColorStop(1, "#607a68");
+          context.fillStyle = gradient;
+          context.fillRect(0, 0, rect.width, rect.height);
+
+          context.fillStyle = "rgba(255, 255, 255, 0.09)";
+          for (let x = 0; x < rect.width; x += 18) {
+            context.fillRect(x, 0, 1, rect.height);
+          }
+
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillStyle = "rgba(255, 250, 241, 0.96)";
+          context.font = `italic ${Math.max(18, Math.min(32, rect.width * 0.095))}px Georgia, serif`;
+          context.fillText("Cào để mở", rect.width / 2, rect.height / 2 - 5);
+
+          context.fillStyle = "rgba(255, 242, 214, 0.82)";
+          context.font = `600 ${Math.max(9, Math.min(12, rect.width * 0.035))}px Arial, sans-serif`;
+          context.fillText("SCRATCH ME", rect.width / 2, rect.height / 2 + 25);
+        }
+
+        function getPoint(event) {
+          const rect = canvas.getBoundingClientRect();
+          return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+          };
+        }
+
+        function scratchAt(point) {
+          const rect = canvas.getBoundingClientRect();
+          const brushSize = Math.max(30, Math.min(58, rect.width * 0.17));
+          context.globalCompositeOperation = "destination-out";
+          context.lineCap = "round";
+          context.lineJoin = "round";
+          context.lineWidth = brushSize;
+
+          context.beginPath();
+          if (previousPoint) {
+            context.moveTo(previousPoint.x, previousPoint.y);
+            context.lineTo(point.x, point.y);
+          } else {
+            context.moveTo(point.x, point.y);
+            context.lineTo(point.x + 0.01, point.y + 0.01);
+          }
+          context.stroke();
+
+          context.beginPath();
+          context.arc(point.x, point.y, brushSize / 2, 0, Math.PI * 2);
+          context.fill();
+          previousPoint = point;
+          drawCount += 1;
+
+          if (drawCount % 10 === 0) checkScratchProgress();
+        }
+
+        function checkScratchProgress() {
+          if (cleared) return;
+          const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
+          const sampleStep = Math.max(4, Math.round(8 * pixelRatio));
+          let transparent = 0;
+          let sampled = 0;
+
+          for (let y = 0; y < canvas.height; y += sampleStep) {
+            for (let x = 0; x < canvas.width; x += sampleStep) {
+              const alphaIndex = (y * canvas.width + x) * 4 + 3;
+              if (imageData[alphaIndex] < 80) transparent += 1;
+              sampled += 1;
+            }
+          }
+
+          if (sampled && transparent / sampled >= 0.5) {
+            cleared = true;
+            drawing = false;
+            previousPoint = null;
+            card.classList.add("scratched");
+            canvas.classList.add("is-cleared");
+            canvas.setAttribute("aria-hidden", "true");
+          }
+        }
+
+        canvas.addEventListener("pointerdown", (event) => {
+          if (cleared) return;
+          drawing = true;
+          previousPoint = null;
+          canvas.setPointerCapture(event.pointerId);
+          scratchAt(getPoint(event));
+          event.preventDefault();
+        });
+
+        canvas.addEventListener("pointermove", (event) => {
+          if (!drawing || cleared) return;
+          scratchAt(getPoint(event));
+          event.preventDefault();
+        });
+
+        function stopScratch(event) {
+          if (!drawing) return;
+          drawing = false;
+          previousPoint = null;
+          if (event && canvas.hasPointerCapture(event.pointerId)) {
+            canvas.releasePointerCapture(event.pointerId);
+          }
+          checkScratchProgress();
+        }
+
+        canvas.addEventListener("pointerup", stopScratch);
+        canvas.addEventListener("pointercancel", stopScratch);
+        canvas.addEventListener("pointerleave", (event) => {
+          if (event.buttons === 0) stopScratch(event);
+        });
+
+        canvas.addEventListener("keydown", (event) => {
+          if (cleared || (event.key !== "Enter" && event.key !== " ")) return;
+          event.preventDefault();
+          cleared = true;
+          card.classList.add("scratched");
+          canvas.classList.add("is-cleared");
+          canvas.setAttribute("aria-hidden", "true");
+        });
+
+        const resizeObserver = new ResizeObserver(() => {
+          window.requestAnimationFrame(drawScratchCover);
+        });
+        resizeObserver.observe(card);
+        window.requestAnimationFrame(drawScratchCover);
+      }
+
+      scratchCards.forEach(setupScratchCard);
 
       const openingParallax = document.getElementById("openingParallax");
       const openingScene = document.getElementById("openingScene");
