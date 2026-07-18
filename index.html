@@ -1472,8 +1472,11 @@
       }
 
       .letter-section {
+        position: relative;
+        isolation: isolate;
         display: grid;
         min-height: 100vh;
+        min-height: 100svh;
         place-items: center;
         overflow: hidden;
         background:
@@ -1483,11 +1486,393 @@
       }
 
       .letter-layout {
+        position: absolute;
+        z-index: 1;
         display: grid;
         width: min(1120px, 100%);
         grid-template-columns: 0.85fr 1.15fr;
         align-items: center;
         gap: clamp(40px, 8vw, 120px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(34px) scale(0.985);
+        visibility: hidden;
+      }
+
+      .letter-section.is-revealing .letter-layout,
+      .letter-section.is-opened .letter-layout {
+        position: relative;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0) scale(1);
+        transition:
+          opacity 1s ease 0.08s,
+          transform 1.15s cubic-bezier(0.16, 0.8, 0.2, 1) 0.08s;
+        visibility: visible;
+      }
+
+      .letter-section.is-revealing .letter-photo-stack,
+      .letter-section.is-opened .letter-photo-stack {
+        transition-delay: 0.1s;
+      }
+
+      .letter-section.is-revealing .letter-paper,
+      .letter-section.is-opened .letter-paper {
+        transition-delay: 0.26s;
+      }
+
+      .letter-section.is-revealing .letter-layout .reveal,
+      .letter-section.is-opened .letter-layout .reveal {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .letter-intro {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: grid;
+        min-height: 100vh;
+        min-height: 100svh;
+        padding: 40px 20px;
+        place-items: center;
+      }
+
+      .letter-envelope-stage {
+        width: min(88vw, 500px);
+        perspective: 1400px;
+        text-align: center;
+        transform: translateY(12px);
+        transition: opacity 0.55s ease, transform 0.7s ease;
+      }
+
+      .letter-section.is-revealing .letter-envelope-stage,
+      .letter-section.is-opened .letter-envelope-stage {
+        opacity: 0;
+        transform: translateY(-20px) scale(1.12);
+      }
+
+      .letter-envelope {
+        position: relative;
+        display: block;
+        width: min(82vw, 410px);
+        aspect-ratio: 1.55;
+        margin: 0 auto;
+        padding: 0;
+        overflow: visible;
+        border-radius: 5px 5px 15px 15px;
+        background: transparent;
+        cursor: pointer;
+        filter: drop-shadow(0 26px 28px rgba(65, 43, 27, 0.22));
+        perspective: 1100px;
+        transform-style: preserve-3d;
+        transition: filter 0.35s ease, transform 0.35s ease;
+      }
+
+      .letter-envelope:hover {
+        filter: drop-shadow(0 32px 34px rgba(65, 43, 27, 0.28));
+        transform: translateY(-6px);
+      }
+
+      .letter-envelope:focus-visible {
+        outline: 3px solid var(--orange);
+        outline-offset: 12px;
+      }
+
+      .letter-section.is-opening .letter-envelope {
+        cursor: default;
+        pointer-events: none;
+      }
+
+      .letter-envelope-shadow {
+        position: absolute;
+        z-index: -1;
+        right: 7%;
+        bottom: -25px;
+        left: 7%;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(65, 43, 27, 0.2);
+        filter: blur(15px);
+        transform: scaleX(0.86);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .letter-section.is-opening .letter-envelope-shadow {
+        opacity: 0.55;
+        transform: scaleX(1.05);
+      }
+
+      .letter-envelope-back {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        overflow: hidden;
+        border: 1px solid rgba(91, 57, 34, 0.16);
+        border-radius: 5px 5px 15px 15px;
+        background:
+          repeating-linear-gradient(-45deg, rgba(142, 83, 50, 0.025) 0 5px, transparent 5px 11px),
+          #d9bd94;
+      }
+
+      .letter-envelope-paper {
+        position: absolute;
+        right: 9%;
+        bottom: 10px;
+        left: 9%;
+        z-index: 3;
+        display: grid;
+        height: 76%;
+        padding: 18px 22px 20px;
+        border: 1px solid rgba(71, 53, 39, 0.12);
+        background:
+          repeating-linear-gradient(transparent 0 25px, rgba(71, 53, 39, 0.055) 26px),
+          #fffaf0;
+        box-shadow: 0 8px 18px rgba(55, 38, 25, 0.09);
+        color: var(--orange-dark);
+        place-items: center;
+        transform: translateY(0);
+      }
+
+      .letter-envelope-paper::before {
+        position: absolute;
+        inset: 9px;
+        border: 1px solid rgba(185, 109, 67, 0.13);
+        content: "";
+        pointer-events: none;
+      }
+
+      .letter-envelope-paper-copy {
+        display: grid;
+        gap: 5px;
+        font-family: "TH Retalin", Georgia, serif;
+        line-height: 1;
+        place-items: center;
+      }
+
+      .letter-envelope-paper-copy strong {
+        font-size: clamp(1.75rem, 6vw, 2.55rem);
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      .letter-envelope-paper-copy small {
+        color: var(--muted);
+        font-family: var(--sans);
+        font-size: clamp(0.52rem, 1.8vw, 0.68rem);
+        font-weight: 700;
+        letter-spacing: 0.19em;
+        text-transform: uppercase;
+      }
+
+      .letter-envelope-paper-copy em {
+        margin-top: 3px;
+        color: var(--orange);
+        font-size: 1rem;
+      }
+
+      .letter-section.is-opening .letter-envelope-paper {
+        animation: letterPaperRise 0.95s cubic-bezier(0.18, 0.75, 0.2, 1) 0.42s forwards;
+      }
+
+      .letter-envelope-flap {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 6;
+        height: 58%;
+        background: linear-gradient(155deg, #f0dfc1 0%, #dfc39a 100%);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transform: rotateX(0deg);
+        transform-origin: top center;
+        transform-style: preserve-3d;
+      }
+
+      .letter-envelope-flap::after {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(25deg, #d3b184, #ead7b7);
+        backface-visibility: hidden;
+        clip-path: inherit;
+        content: "";
+        transform: rotateX(180deg);
+      }
+
+      .letter-section.is-opening .letter-envelope-flap {
+        animation: letterFlapOpen 1.05s cubic-bezier(0.33, 0.02, 0.18, 1) forwards;
+      }
+
+      .letter-envelope-front {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        overflow: hidden;
+        border-radius: 5px 5px 15px 15px;
+        background: linear-gradient(145deg, #ead3ae 0%, #ddbd8f 100%);
+        box-shadow: inset 0 -1px 0 rgba(91, 57, 34, 0.16);
+        clip-path: polygon(0 0, 50% 43%, 100% 0, 100% 100%, 0 100%);
+      }
+
+      .letter-envelope-front::before,
+      .letter-envelope-front::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        pointer-events: none;
+      }
+
+      .letter-envelope-front::before {
+        background:
+          linear-gradient(33deg, transparent 49.5%, rgba(106, 71, 44, 0.14) 50%, transparent 50.5%),
+          linear-gradient(-33deg, transparent 49.5%, rgba(106, 71, 44, 0.12) 50%, transparent 50.5%);
+      }
+
+      .letter-envelope-front::after {
+        background: radial-gradient(circle at 50% 45%, rgba(255, 248, 231, 0.32), transparent 38%);
+      }
+
+      .letter-envelope-action {
+        position: absolute;
+        z-index: 7;
+        bottom: 16%;
+        left: 50%;
+        min-width: 145px;
+        padding: 11px 22px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 999px;
+        background: var(--orange-dark);
+        box-shadow: 0 8px 18px rgba(74, 41, 25, 0.2);
+        color: #fffaf1;
+        font-family: "TH Retalin", Georgia, serif;
+        font-size: 1.05rem;
+        letter-spacing: 0.04em;
+        transform: translateX(-50%);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .letter-envelope:hover .letter-envelope-action {
+        transform: translateX(-50%) scale(1.04);
+      }
+
+      .letter-section.is-opening .letter-envelope-action {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px) scale(0.94);
+      }
+
+      .letter-envelope-hint {
+        margin: 42px 0 0;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        transition: opacity 0.35s ease;
+      }
+
+      .letter-section.is-opening .letter-envelope-hint {
+        opacity: 0;
+      }
+
+      .letter-flower-transition {
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .letter-flower-veil {
+        position: absolute;
+        inset: 0;
+        background: rgba(224, 232, 244, 0.62);
+        opacity: 0;
+        animation: letterFlowerVeil 1.9s ease 0.56s forwards;
+      }
+
+      .letter-flying-flower {
+        position: absolute;
+        z-index: 1;
+        width: var(--flower-size);
+        max-width: none;
+        height: auto;
+        opacity: 0;
+        filter: drop-shadow(0 12px 15px rgba(26, 51, 88, 0.16));
+        transform: translate(-50%, -35%) scale(0.08) rotate(0deg);
+        transform-origin: center;
+        will-change: opacity, transform;
+        animation: letterFlowerFlight 1.9s cubic-bezier(0.16, 0.65, 0.24, 1) var(--flower-delay) forwards;
+      }
+
+      body.letter-transitioning {
+        overflow: hidden;
+      }
+
+      @keyframes letterFlapOpen {
+        0% {
+          z-index: 6;
+          transform: rotateX(0deg);
+        }
+        49% {
+          z-index: 6;
+        }
+        50%,
+        100% {
+          z-index: 2;
+        }
+        100% {
+          transform: rotateX(-180deg);
+        }
+      }
+
+      @keyframes letterPaperRise {
+        0% {
+          transform: translateY(0);
+        }
+        72% {
+          transform: translateY(-59%) rotate(-0.8deg);
+        }
+        100% {
+          transform: translateY(-52%) rotate(0deg);
+        }
+      }
+
+      @keyframes letterFlowerFlight {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -35%) scale(0.08) rotate(0deg);
+        }
+        10% {
+          opacity: 1;
+        }
+        68%,
+        78% {
+          opacity: 1;
+          transform:
+            translate(calc(-50% + var(--flower-x)), calc(-50% + var(--flower-y)))
+            scale(var(--flower-scale)) rotate(var(--flower-spin));
+        }
+        100% {
+          opacity: 0;
+          transform:
+            translate(calc(-50% + var(--flower-exit-x)), calc(-50% + var(--flower-exit-y)))
+            scale(var(--flower-exit-scale)) rotate(calc(var(--flower-spin) + 38deg));
+        }
+      }
+
+      @keyframes letterFlowerVeil {
+        0%,
+        25% {
+          opacity: 0;
+        }
+        62%,
+        76% {
+          opacity: 0.68;
+        }
+        100% {
+          opacity: 0;
+        }
       }
 
       .letter-photo-stack {
@@ -2339,7 +2724,34 @@
       </section>
 
       <section class="section letter-section" id="letter">
-        <div class="letter-layout">
+        <div class="letter-intro" id="letterIntro">
+          <div class="letter-envelope-stage">
+            <button
+              class="letter-envelope"
+              id="letterOpenButton"
+              type="button"
+              aria-controls="letterContent"
+              aria-expanded="false"
+              aria-label="Mở lá thư dành cho Trân"
+            >
+              <span class="letter-envelope-shadow" aria-hidden="true"></span>
+              <span class="letter-envelope-back" aria-hidden="true"></span>
+              <span class="letter-envelope-paper" aria-hidden="true">
+                <span class="letter-envelope-paper-copy">
+                  <small>Dành cho Trân</small>
+                  <strong>B &amp; T</strong>
+                  <em>♡</em>
+                </span>
+              </span>
+              <span class="letter-envelope-flap" aria-hidden="true"></span>
+              <span class="letter-envelope-front" aria-hidden="true"></span>
+              <span class="letter-envelope-action">Mở lá thư</span>
+            </button>
+            <p class="letter-envelope-hint">Chạm vào phong bì để mở</p>
+          </div>
+        </div>
+
+        <div class="letter-layout" id="letterContent" aria-hidden="true">
           <div class="letter-photo-stack reveal" aria-hidden="true">
             <figure class="letter-photo letter-photo-one">
               <img src="media/photos/1i3qk2t39-52akhn.webp" alt="" loading="lazy" />
@@ -2739,6 +3151,135 @@
       }
 
       enterStoryButton.addEventListener("click", enterStory);
+
+      const letterSection = document.getElementById("letter");
+      const letterIntro = document.getElementById("letterIntro");
+      const letterContent = document.getElementById("letterContent");
+      const letterOpenButton = document.getElementById("letterOpenButton");
+      const reduceLetterMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const letterFlowerSources = [
+        "pics/flowers/f1.png",
+        "pics/flowers/0.png",
+        "pics/flowers/2.png",
+        "pics/flowers/3.png",
+        "pics/flowers/4.png",
+        "pics/flowers/5.png",
+        "pics/flowers/6.png",
+        "pics/flowers/7.png",
+        "pics/flowers/8.png",
+        "pics/flowers/53.png",
+        "pics/flowers/79.png",
+        "pics/flowers/te354.png"
+      ];
+      let letterHasOpened = false;
+      let letterFlowersPreloaded = false;
+
+      function preloadLetterFlowers() {
+        if (letterFlowersPreloaded || reduceLetterMotion) return;
+        letterFlowersPreloaded = true;
+        letterFlowerSources.forEach((source) => {
+          const flower = new Image();
+          flower.decoding = "async";
+          flower.src = source;
+        });
+      }
+
+      function createLetterFlowerTransition(origin) {
+        const transition = document.createElement("div");
+        const veil = document.createElement("div");
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const columns = viewportWidth < 720 ? 8 : 10;
+        const rows = viewportWidth < 720 ? 10 : 8;
+        const cellWidth = viewportWidth / columns;
+        const cellHeight = viewportHeight / rows;
+
+        transition.className = "letter-flower-transition";
+        transition.setAttribute("aria-hidden", "true");
+        veil.className = "letter-flower-veil";
+        transition.appendChild(veil);
+
+        for (let index = 0; index < columns * rows; index += 1) {
+          const column = index % columns;
+          const row = Math.floor(index / columns);
+          const startX = origin.x + (Math.random() - 0.5) * 32;
+          const startY = origin.y + (Math.random() - 0.5) * 18;
+          const targetX = (column + 0.5) * cellWidth + (Math.random() - 0.5) * cellWidth * 0.28;
+          const targetY = (row + 0.5) * cellHeight + (Math.random() - 0.5) * cellHeight * 0.22;
+          const direction = targetX < viewportWidth / 2 ? -1 : 1;
+          const flowerSize = Math.min(430, Math.max(160, cellWidth * 1.78, cellHeight * 1.86));
+          const flower = document.createElement("img");
+
+          flower.className = "letter-flying-flower";
+          flower.src = letterFlowerSources[index % letterFlowerSources.length];
+          flower.alt = "";
+          flower.decoding = "async";
+          flower.draggable = false;
+          flower.style.left = `${startX}px`;
+          flower.style.top = `${startY}px`;
+          flower.style.setProperty("--flower-size", `${flowerSize * (0.88 + Math.random() * 0.24)}px`);
+          flower.style.setProperty("--flower-x", `${targetX - startX}px`);
+          flower.style.setProperty("--flower-y", `${targetY - startY}px`);
+          flower.style.setProperty(
+            "--flower-exit-x",
+            `${targetX - startX + direction * viewportWidth * (0.2 + Math.random() * 0.12)}px`
+          );
+          flower.style.setProperty(
+            "--flower-exit-y",
+            `${targetY - startY + (Math.random() - 0.5) * viewportHeight * 0.18}px`
+          );
+          flower.style.setProperty("--flower-scale", (0.92 + Math.random() * 0.18).toFixed(2));
+          flower.style.setProperty("--flower-exit-scale", (1.02 + Math.random() * 0.18).toFixed(2));
+          flower.style.setProperty("--flower-spin", `${-190 + Math.random() * 380}deg`);
+          flower.style.setProperty("--flower-delay", `${560 + (index % columns) * 12 + Math.random() * 110}ms`);
+          transition.appendChild(flower);
+        }
+
+        document.body.appendChild(transition);
+        return transition;
+      }
+
+      function revealLetterContent() {
+        letterContent.setAttribute("aria-hidden", "false");
+        letterContent.querySelectorAll(".reveal").forEach((element) => element.classList.add("visible"));
+        letterSection.classList.add("is-revealing");
+      }
+
+      function finishLetterOpening(flowerTransition) {
+        letterSection.classList.add("is-opened");
+        letterSection.classList.remove("is-opening", "is-revealing");
+        document.body.classList.remove("letter-transitioning");
+        if (flowerTransition) flowerTransition.remove();
+        if (letterIntro.isConnected) letterIntro.remove();
+      }
+
+      function openLetter() {
+        if (letterHasOpened) return;
+        letterHasOpened = true;
+        letterOpenButton.disabled = true;
+        letterOpenButton.setAttribute("aria-expanded", "true");
+        const envelopeRect = letterOpenButton.getBoundingClientRect();
+        const origin = {
+          x: envelopeRect.left + envelopeRect.width / 2,
+          y: envelopeRect.top + envelopeRect.height * 0.16
+        };
+
+        letterSection.classList.add("is-opening");
+
+        if (reduceLetterMotion) {
+          revealLetterContent();
+          finishLetterOpening(null);
+          return;
+        }
+
+        document.body.classList.add("letter-transitioning");
+        const flowerTransition = createLetterFlowerTransition(origin);
+        window.setTimeout(revealLetterContent, 1850);
+        window.setTimeout(() => finishLetterOpening(flowerTransition), 2850);
+      }
+
+      window.addEventListener("load", preloadLetterFlowers, { once: true });
+      letterOpenButton.addEventListener("click", openLetter, { once: true });
 
       const revealObserver = new IntersectionObserver(
         (entries) => {
