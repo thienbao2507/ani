@@ -2034,6 +2034,103 @@
         color: #d89a75;
       }
 
+      /* Fixed vinyl music control */
+      .music-player {
+        position: fixed;
+        right: calc(22px + env(safe-area-inset-right, 0px));
+        bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+        z-index: 110;
+        width: 88px;
+        height: 88px;
+      }
+
+      .music-toggle {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        padding: 0;
+        border: 2px solid rgba(255, 248, 235, 0.92);
+        border-radius: 50%;
+        background: #12110f;
+        box-shadow:
+          0 0 0 4px rgba(185, 109, 67, 0.36),
+          0 14px 34px rgba(28, 22, 17, 0.38);
+        cursor: pointer;
+        isolation: isolate;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .music-toggle:hover {
+        box-shadow:
+          0 0 0 5px rgba(185, 109, 67, 0.48),
+          0 17px 38px rgba(28, 22, 17, 0.44);
+        transform: translateY(-3px) scale(1.03);
+      }
+
+      .music-toggle:focus-visible {
+        outline: 3px solid #e4a47d;
+        outline-offset: 5px;
+      }
+
+      .music-vinyl-video {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+        filter: saturate(0.95) contrast(1.12) brightness(0.82);
+        transform: scale(1.08);
+        pointer-events: none;
+      }
+
+      .music-toggle::before {
+        position: absolute;
+        inset: 5px;
+        z-index: 1;
+        border-radius: 50%;
+        background:
+          repeating-radial-gradient(circle, transparent 0 7px, rgba(255, 255, 255, 0.12) 8px, transparent 9px),
+          linear-gradient(125deg, transparent 30%, rgba(255, 255, 255, 0.24) 47%, transparent 62%);
+        content: "";
+        pointer-events: none;
+      }
+
+      .music-control-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 2;
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        background: rgba(24, 21, 18, 0.72);
+        color: #fffaf1;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.32);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .music-control-icon svg {
+        width: 15px;
+        height: 15px;
+        fill: currentColor;
+      }
+
+      .music-icon-pause,
+      .music-toggle.is-playing .music-icon-play {
+        display: none;
+      }
+
+      .music-toggle.is-playing .music-icon-pause {
+        display: block;
+      }
+
       .lightbox {
         position: fixed;
         inset: 0;
@@ -2376,6 +2473,13 @@
       }
 
       @media (max-width: 480px) {
+        .music-player {
+          right: calc(14px + env(safe-area-inset-right, 0px));
+          bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+          width: 72px;
+          height: 72px;
+        }
+
         .section {
           padding-right: 18px;
           padding-left: 18px;
@@ -2795,6 +2899,25 @@
       <span>25 · 07 · 2026</span>
     </footer>
 
+    <div class="music-player" id="musicPlayer">
+      <button
+        class="music-toggle"
+        id="musicToggle"
+        type="button"
+        aria-label="Phát nhạc Tình Cờ Yêu Em"
+        aria-pressed="false"
+      >
+        <video class="music-vinyl-video" id="musicVinylVideo" muted loop playsinline preload="metadata" aria-hidden="true">
+          <source src="media/videos/db2e2af99ec84001a0348ced49e9fa9d.mp4" type="video/mp4" />
+        </video>
+        <span class="music-control-icon" aria-hidden="true">
+          <svg class="music-icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+          <svg class="music-icon-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z" /></svg>
+        </span>
+      </button>
+      <audio id="backgroundMusic" loop preload="metadata" src="media/musics/Tình Cờ Yêu Em.mp3"></audio>
+    </div>
+
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Xem ảnh phóng to">
       <button class="lightbox-close" id="lightboxClose" aria-label="Đóng ảnh">×</button>
       <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Ảnh trước">←</button>
@@ -2803,6 +2926,39 @@
     </div>
 
     <script>
+      const musicToggle = document.getElementById("musicToggle");
+      const backgroundMusic = document.getElementById("backgroundMusic");
+      const musicVinylVideo = document.getElementById("musicVinylVideo");
+      const reduceMusicMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      function updateMusicPlayer(isPlaying) {
+        musicToggle.classList.toggle("is-playing", isPlaying);
+        musicToggle.setAttribute("aria-pressed", String(isPlaying));
+        musicToggle.setAttribute(
+          "aria-label",
+          isPlaying ? "Tạm dừng nhạc Tình Cờ Yêu Em" : "Phát nhạc Tình Cờ Yêu Em"
+        );
+      }
+
+      musicToggle.addEventListener("click", async () => {
+        if (backgroundMusic.paused) {
+          try {
+            await backgroundMusic.play();
+            if (!reduceMusicMotion.matches) await musicVinylVideo.play();
+          } catch (error) {
+            backgroundMusic.pause();
+            musicVinylVideo.pause();
+            updateMusicPlayer(false);
+          }
+        } else {
+          backgroundMusic.pause();
+          musicVinylVideo.pause();
+        }
+      });
+
+      backgroundMusic.addEventListener("play", () => updateMusicPlayer(true));
+      backgroundMusic.addEventListener("pause", () => updateMusicPlayer(false));
+
       const photos = [
         "1i3qk2t39-52akhn.webp",
         "5580cf4c-8f8b-413a-bb13-c8dd8b476d06.webp",
@@ -3191,7 +3347,7 @@
         const viewportHeight = window.innerHeight;
         const columns = viewportWidth < 720 ? 8 : 10;
         const rows = viewportWidth < 720 ? 10 : 8;
-        const cellWidth = viewportWidth / columns;
+         const cellWidth = viewportWidth / columns;
         const cellHeight = viewportHeight / rows;
 
         transition.className = "letter-flower-transition";
